@@ -2,6 +2,7 @@ package com.embarkx.firstjobapp.company;
 
 
 import com.embarkx.firstjobapp.job.Job;
+import com.embarkx.firstjobapp.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -20,7 +21,26 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private List<Job> jobs;
 
-//    private List<Review> review;
+    @OneToMany(mappedBy = "company")
+    private List<Review> review;
+
+
+
+    public Company(Long id, String name, String description, List<Job> jobs, List<Review> review) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.jobs = jobs;
+        this.review = review;
+    }
+
+    public List<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(List<Review> review) {
+        this.review = review;
+    }
 
     public Long getId() {
         return id;
@@ -57,10 +77,4 @@ public class Company {
     public Company() {
     }
 
-    public Company(Long id, String name, String description, List<Job> jobs) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.jobs = jobs;
-    }
 }
