@@ -13,7 +13,7 @@ public class JobController {
 
 
     private JobService jobService;
-    private Long nextId= 1L;
+//    private Long nextId= 1L;
 
     public JobController(JobService jobService) {
         this.jobService = jobService;
@@ -27,7 +27,7 @@ public class JobController {
 
     @PostMapping("/create")
     public ResponseEntity<String> CreateJob(@RequestBody Job job){
-        job.setId(nextId++);
+//        job.setId(nextId++);
         jobService.createJob(job);
         return ResponseEntity.status(HttpStatus.CREATED).body("Job created successfully");
 
