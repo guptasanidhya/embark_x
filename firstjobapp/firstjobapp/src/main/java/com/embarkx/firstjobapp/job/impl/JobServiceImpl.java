@@ -62,7 +62,6 @@ public class JobServiceImpl implements JobService {
 
 
         Optional<Job> jobOptional = jobRepository.findById(id);
-        System.out.println(jobOptional);
         if(jobOptional.isPresent()){
             Job job = jobOptional.get();
             job.setTitle(updatedJob.getTitle());

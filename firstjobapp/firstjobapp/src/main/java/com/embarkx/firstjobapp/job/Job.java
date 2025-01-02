@@ -1,6 +1,7 @@
 package com.embarkx.firstjobapp.job;
 
 
+import com.embarkx.firstjobapp.company.Company;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +16,17 @@ public class Job {
     private String minSalary;
     private String maxSalary;
     private String location;
+
+    @ManyToOne
+    private Company company;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
     public Long getId() {
         return id;
@@ -64,13 +76,14 @@ public class Job {
         this.minSalary = minSalary;
     }
 
-    public Job(Long id, String title, String description, String minSalary, String maxSalary, String location) {
+    public Job(Long id, String title, String description, String maxSalary, String minSalary, String location, Company company) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.minSalary = minSalary;
         this.maxSalary = maxSalary;
+        this.minSalary = minSalary;
         this.location = location;
+        this.company = company;
     }
 
     public Job() {
