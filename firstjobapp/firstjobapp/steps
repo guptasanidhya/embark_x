@@ -1,0 +1,74 @@
+lecture 5 docker
+#./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName={yourid}/jobappimage"
+# docker push {yourid}/jobappimage
+#> docker run -p 8080:8080 {yourid}/jobappimage
+docker run -d -p 8080:8080 {yourid}/jobappimage
+  docker exec -it pgadmin ping db
+------------------------------------------------------------
+lecture 6 postgres
+1.added postgres dependency in pom
+2. add properties for postgres in application.properties
+#postgres
+spring.datasource.url=jdbc:postgresql://localhost:5432/jobapp
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.database=POSTGRESQL
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+--------------------------------------------------------------------------
+
+3. install image for postgres and pgadmin from docker
+#docker images
+------------------------------------------------------------------without network
+if postgres is available then ok else instll it
+#docker run -d --name db -e POSTGRES_PASSWORD={password} postgres
+#docker run -d --name pgadmin -e PGADMIN_DEGAULT_EMAIL=admin@admin.com -e PGADMIN_DEFAULT_PASSWORD=embarkx dpage/pgadmin4
+
+#docker exec -it pgadmin ping db
+_______________________________________________________________
+docker container cannot communicate without docker network
+
+docker rm -f db pgadmin
+ docker network create my-network
+------------------------------------------------------------using networks:
+#docker run -d --name --network my-network -e POSTGRES_PASSWORD=mysecretpassword postgres
+
+#docker run -d --name pgadmin --network my-network -e
+PGADMIN_DEFAULT_EMAIL=user@domain.com -e PGADMIN_DEFAULT_PASSWORD=SuperSecret dpage/pgadmin4
+
+#docker exec -it pgadmin ping db
+
+-------------------------------------------
+
+updated set of commands
+
+start the postgreSQL service
+#docker run -d \
+--name postgres_container \
+-e POSTGRES_USER=embarkx \
+-e POSTGRES_PASSWORD=embarkx \
+-e PGDATA=/data/postgres \
+-v psotgres:/data/postgres \
+-p 5432:5432 \
+--network postgres \
+--restart unless-stopped \
+postgres
+
+start the pgAdmin service:
+docker run -d \
+--name pgadmin_container \
+-e PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org \
+-e PGADMIN_DEFAULT_PASSWORD=admin \
+-e PGADMIN_CONFIG_SERVER_MODE=False \
+-v pgadmin:/var/lib/pgadmin \
+- 5050:80 \
+--network postgres \
+--restart unless-stopped \
+dpage/pgadmin4
+
+
+--better to create a docker compose file and add all the details in it
+
+
+go to localhost:5050 for pgadmin setup the database by adding connection
